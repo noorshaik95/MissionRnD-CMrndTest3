@@ -50,7 +50,26 @@ struct node{
 	struct node *right;
 };
 
+void missing_value(struct node *root, int *value);
 
-int get_missing_value(struct node *root,int n){
-    return -1;
+int get_missing_value(struct node *root, int n)
+{
+	int i = 1, mask = 0;
+	if (root == NULL || n <= 0)
+		return -1;
+	else
+	{
+		for (i = 1; i <= n; i++)
+			mask = mask ^ i;
+		missing_value(root, &mask);
+		return mask;
+	}
+}
+void missing_value(struct node *root, int *value)
+{
+	if (root == NULL)
+		return;
+	missing_value(root->left, value);
+	(*value) = (*value) ^ (root->data);
+	missing_value(root->right, value);
 }
